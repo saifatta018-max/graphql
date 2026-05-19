@@ -60,7 +60,7 @@ export async function signIn({ domain, identifier, password }) {
   });
 
   if (!response.ok) {
-    throw new Error("Invalid credentials. Please check username/email and password.");
+    throw new Error("Some ain't right fam. Please check username/email and password.");
   }
 
   const rawBody = await response.text();
