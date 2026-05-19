@@ -62,14 +62,7 @@ export function renderXpOverTime(container, transactions) {
   for (let i = 0; i < pts.length; i += step) labelIndices.push(i);
   if (labelIndices[labelIndices.length - 1] !== pts.length - 1) labelIndices.push(pts.length - 1);
 
-  const seen = new Set();
-  const xLabels = labelIndices.map((idx) => {
-    const p = pts[idx];
-    const label = p.date.toLocaleDateString("en-GB", { month: "short", year: "2-digit" });
-    if (seen.has(label)) return "";   // skip duplicate month+year labels
-    seen.add(label);
-    return `<text x="${px(idx)}" y="${H - 6}" fill="#7ec8b0" font-size="9" text-anchor="middle">${label}</text>`;
-  }).join("");
+  const xLabels = "";
 
   // Dots for last and first
   const dot = (i) => {
