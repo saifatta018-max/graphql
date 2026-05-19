@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My GraphQL Profile</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body>
+    <!-- Animated background (kept from original — it's great) -->
+    <div class="bg-layer" aria-hidden="true"></div>
+
+    <div id="app">
+
+      <!-- ── LOGIN ──────────────────────────────────────────────────────── -->
+      <section id="login-view">
+        <p class="login-logo">⬡ GraphQL Profile</p>
+        <p class="login-sub">Sign in with your <strong>username</strong> or <strong>email</strong> + password</p>
+
+        <form id="login-form" novalidate>
+          <div class="field">
+            <label for="identifier">Username or Email <span class="char-count" id="id-count"></span></label>
+            <input id="identifier" name="identifier" type="text" autocomplete="username" required placeholder="your.username" maxlength="60" />
+          </div>
+
+          <div class="field">
+            <label for="password">Password <span class="char-count" id="pw-count"></span></label>
+            <div class="pw-wrap">
+              <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="••••••••" maxlength="128" />
+              <button id="toggle-password" type="button" class="icon-btn" aria-label="Show password">
+                <span id="password-eye">👁</span>
+              </button>
+            </div>
+          </div>
+
+          <p class="domain-hint">Domain: <strong>learn.reboot01.com</strong></p>
+          <input id="domain" name="domain" type="hidden" value="learn.reboot01.com" />
+
+          <button type="submit" class="btn-primary">Sign in</button>
+          <p id="login-error" class="error-msg" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- ── DASHBOARD ──────────────────────────────────────────────────── -->
+      <section id="profile-view" class="hidden">
+
+        <!-- Topbar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <h2>⬡ GraphQL Profile</h2>
+            <p>Your school journey at a glance</p>
+          </div>
+          <div class="topbar-right">
+            <button id="refresh-btn" class="btn-ghost">↻ Refresh</button>
+            <button id="logout-btn" class="btn-danger">Sign out</button>
+          </div>
+        </header>
+
+        <!-- Body: sidebar + content -->
+        <div class="dash-body">
+
+          <!-- Sidebar -->
+          <aside class="sidebar">
+
+            <!-- Avatar / identity card -->
+            <div class="avatar-card">
+              <div class="avatar" id="avatar-initials">?</div>
+              <div class="avatar-name" id="welcome-name">—</div>
+              <div class="sidebar-meta">
+                <div class="meta-row">
+                  <span>Username</span>
+                  <span id="sidebar-login">—</span>
+                </div>
+                <div class="meta-row">
+                  <span>ID</span>
+                  <span id="sidebar-id">—</span>
+                </div>
+                <div class="meta-row">
+                  <span>Campus</span>
+                  <span id="sidebar-campus">—</span>
+                </div>
+                <div class="meta-row">
+                  <span>Email</span>
+                  <span id="sidebar-email">—</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Quick stats -->
+            <div class="stat-pill">
+              <span class="stat-label">Total XP</span>
+              <span class="stat-value" id="total-xp">—</span>
+              <span class="stat-sub">across all projects</span>
+            </div>
+
+            <div class="stat-pill">
+              <span class="stat-label">Audit Ratio</span>
+              <span class="stat-value" id="audit-ratio-value">—</span>
+              <span class="stat-sub">given ÷ received</span>
+            </div>
+
+            <!-- Nav -->
+            <nav class="side-nav" aria-label="Dashboard navigation">
+              <button class="nav-link active" data-section="sec-overview">📊 Overview</button>
+              <button class="nav-link" data-section="sec-xp">⚡ XP History</button>
+              <button class="nav-link" data-section="sec-skills">🧠 Skills</button>
+              <button class="nav-link" data-section="sec-audits">🔍 Audits</button>
+            </nav>
+          </aside>
+
+          <!-- Content area -->
+          <main class="content-area">
+
+            <!-- ── Overview (charts) ──────────────────────────────── -->
+            <section id="sec-overview" class="content-section active">
+              <div class="card">
+                <h3 class="card-title"><span class="icon">📈</span> XP Earned Over Time</h3>
+                <div class="chart-wrap" id="xp-time-chart"></div>
+              </div>
+
+              <div class="card">
+                <h3 class="card-title"><span class="icon">🔍</span> Audit Ratio</h3>
+                <div class="chart-wrap" id="audit-chart"></div>
+              </div>
+
+              <div class="card">
+                <h3 class="card-title"><span class="icon">🏆</span> Top Projects by XP</h3>
+                <div class="chart-wrap" id="xp-project-chart" style="max-height:420px; overflow-y:auto;"></div>
+              </div>
+            </section>
+
+            <!-- ── XP History ──────────────────────────────────────── -->
+            <section id="sec-xp" class="content-section">
+              <div class="card">
+                <h3 class="card-title"><span class="icon">⚡</span> XP Transaction History</h3>
+                <div class="hist-list" id="xp-history"></div>
+              </div>
+            </section>
+
+            <!-- ── Skills ─────────────────────────────────────────── -->
+            <section id="sec-skills" class="content-section">
+              <div class="card">
+                <h3 class="card-title"><span class="icon">🧠</span> Skills</h3>
+                <div class="skills-grid" id="skills-list"></div>
+              </div>
+            </section>
+
+            <!-- ── Audits ─────────────────────────────────────────── -->
+            <section id="sec-audits" class="content-section">
+              <div class="card">
+                <h3 class="card-title"><span class="icon">🔍</span> Audit Breakdown</h3>
+                <div class="chart-wrap" id="audit-chart-2"></div>
+                <p style="margin-top:14px; font-size:0.85rem; color:var(--muted);">
+                  Your audit ratio shows how many audits you've <strong style="color:var(--accent)">given</strong>
+                  vs how many you've <strong style="color:var(--accent2)">received</strong>.
+                  A healthy ratio is above 1.0 — it means you're contributing more than you're consuming.
+                </p>
+              </div>
+            </section>
+
+          </main>
+        </div>
+      </section>
+    </div>
+
+    <script type="module" src="./src/js/main.js"></script>
+    <script>
+      // ── Character counters ──────────────────────────────────────────────────
+      function attachCounter(inputId, countId, max) {
+        const input = document.getElementById(inputId);
+        const count = document.getElementById(countId);
+        if (!input || !count) return;
+        input.addEventListener('input', () => {
+          const len = input.value.length;
+          count.textContent = `${len}/${max}`;
+          count.style.color = len >= max * 0.9 ? '#f0a500' : '';
+        });
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        attachCounter('identifier', 'id-count', 60);
+        attachCounter('password',   'pw-count',  128);
+      });
+      document.addEventListener('DOMContentLoaded', () => {
+        const nav = document.querySelectorAll('.nav-link');
+        nav.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const auditChart  = document.getElementById('audit-chart');
+            const auditChart2 = document.getElementById('audit-chart-2');
+            if (btn.dataset.section === 'sec-audits' && auditChart && auditChart2) {
+              auditChart2.innerHTML = auditChart.innerHTML;
+            }
+          });
+        });
+
+        // Set avatar initials from welcome name
+        const observer = new MutationObserver(() => {
+          const name = document.getElementById('welcome-name')?.textContent?.trim();
+          const initials = document.getElementById('avatar-initials');
+          if (name && name !== '—' && initials) {
+            const parts = name.split(' ').filter(Boolean);
+            initials.textContent = parts.length >= 2
+              ? parts[0][0].toUpperCase() + parts[1][0].toUpperCase()
+              : name[0].toUpperCase();
+          }
+        });
+        const welcomeEl = document.getElementById('welcome-name');
+        if (welcomeEl) observer.observe(welcomeEl, { childList: true, characterData: true, subtree: true });
+      });
+    </script>
+  </body>
+</html>
