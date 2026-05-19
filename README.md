@@ -22,6 +22,8 @@ graphql-profile/
 
 ## 🚀 How to Run on Your Laptop
 
+The easy way: just open this link: https://saifatta018-max.github.io/graphql/
+
 This project uses **ES Modules** (`type="module"` in the HTML), which means you **cannot** just double-click `index.html` — your browser will block it. You need a local server. Here are two easy ways:
 
 ---
