@@ -243,7 +243,7 @@ loginForm.addEventListener("submit", async (e) => {
   const domain     = String(form.get("domain")     || "").trim().replace(/^https?:\/\//, "");
 
   if (!identifier || !password || !domain) {
-    setLoginError("All fields are required.");
+    setLoginError("All fields are required dawg.");
     return;
   }
 
