@@ -5,7 +5,7 @@ function svg(width, height, content, extraAttrs = "") {
 }
 
 function fmt(n) {
-  return Number(n || 0).toLocaleString();
+  return `${(Number(n || 0) / 1000).toFixed(2)} kB`;
 }
 
 // ─── Chart 1: XP Over Time (smooth area line) ────────────────────────────────
