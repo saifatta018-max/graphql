@@ -95,7 +95,7 @@ const QUERIES = {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 function fmtXp(n) {
-  return `${Number(n || 0).toLocaleString()} XP`;
+  return `${(Number(n || 0) / 1000).toFixed(2)} kB`;
 }
 
 function parseAttrs(attrs) {
