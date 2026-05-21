@@ -45,10 +45,10 @@ const QUERIES = {
     }
   `,
   // Query with arguments (variables)
- xpByUser: `
+xpByUser: `
     query XpByUser($userId: Int!) {
       transaction(
-        where: { userId: { _eq: $userId }, type: { _eq: "xp" }, path: { _like: "%/bh-module/%" } }
+        where: { userId: { _eq: $userId }, type: { _eq: "xp" }, path: { _like: "%/bh-module/%" }, _not: { path: { _like: "%/bh-module/%/%" } } }
         order_by: { createdAt: asc }
       ) {
         amount
